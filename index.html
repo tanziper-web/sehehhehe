@@ -1,0 +1,2483 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>✦ Myticals Web Pro ✦</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <style>
+    /* ===== ROOT THEMES (sama seperti sebelumnya) ===== */
+    :root {
+      --bg-body: #0b0e14;
+      --bg-card: rgba(20,25,35,0.85);
+      --text-primary: #f0f3fa;
+      --text-secondary: #a8b2c9;
+      --border-color: rgba(255,255,255,0.08);
+      --accent: #6c63ff;
+      --accent-hover: #7b73ff;
+      --shadow: 0 20px 40px rgba(0,0,0,0.6);
+      --nav-bg: rgba(11,14,20,0.9);
+      --input-bg: rgba(255,255,255,0.07);
+      --transition: 0.3s ease;
+      --radius: 28px;
+    }
+    [data-theme="light"] {
+      --bg-body: #f2f5f9;
+      --bg-card: rgba(255,255,255,0.85);
+      --text-primary: #1a1e2a;
+      --text-secondary: #4a5268;
+      --border-color: rgba(0,0,0,0.08);
+      --accent: #4a3fcf;
+      --accent-hover: #5a4fdf;
+      --shadow: 0 20px 40px rgba(0,0,0,0.08);
+      --nav-bg: rgba(242,245,249,0.92);
+      --input-bg: rgba(0,0,0,0.05);
+    }
+    [data-theme="blue"] {
+      --bg-body: #0a1628;
+      --bg-card: rgba(18,34,64,0.85);
+      --text-primary: #d6e4ff;
+      --text-secondary: #8aa3d0;
+      --border-color: rgba(64,128,255,0.2);
+      --accent: #3b82f6;
+      --accent-hover: #60a5fa;
+      --shadow: 0 20px 40px rgba(0,20,80,0.6);
+      --nav-bg: rgba(10,22,40,0.9);
+      --input-bg: rgba(59,130,246,0.1);
+    }
+    [data-theme="pink"] {
+      --bg-body: #1a0e1a;
+      --bg-card: rgba(40,20,40,0.85);
+      --text-primary: #fce4f0;
+      --text-secondary: #c9a0b8;
+      --border-color: rgba(255,100,180,0.2);
+      --accent: #ec4899;
+      --accent-hover: #f472b6;
+      --shadow: 0 20px 40px rgba(80,0,40,0.6);
+      --nav-bg: rgba(26,14,26,0.9);
+      --input-bg: rgba(236,72,153,0.1);
+    }
+    [data-theme="green"] {
+      --bg-body: #0a1a12;
+      --bg-card: rgba(16,40,28,0.85);
+      --text-primary: #d4f0e4;
+      --text-secondary: #8ab8a0;
+      --border-color: rgba(0,200,100,0.2);
+      --accent: #10b981;
+      --accent-hover: #34d399;
+      --shadow: 0 20px 40px rgba(0,40,20,0.6);
+      --nav-bg: rgba(10,26,18,0.9);
+      --input-bg: rgba(16,185,129,0.1);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-body);
+      color: var(--text-primary);
+      transition: background 0.4s, color 0.4s;
+      min-height: 100vh;
+      padding-top: 74px;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top:0; left:0; right:0; bottom:0;
+      background: inherit;
+      z-index: -1;
+      transition: 0.5s;
+    }
+    #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      pointer-events: none;
+    }
+    #particleCanvas {
+      position: fixed;
+      top:0; left:0; width:100%; height:100%;
+      z-index: -1;
+      pointer-events: none;
+      display: none;
+    }
+    a { text-decoration: none; color: inherit; }
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed; top:0; left:0; right:0; z-index:999;
+      background: var(--nav-bg);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border-color);
+      padding: 0 24px;
+      height: 74px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.3s;
+    }
+    .navbar .logo {
+      font-size: 22px; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), #ff6b9d);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
+    }
+    .navbar .logo i { margin-right: 8px; }
+    .navbar .nav-links {
+      display: flex; gap: 6px; list-style: none; align-items: center;
+      flex-wrap: wrap;
+    }
+    .navbar .nav-links li a {
+      padding: 8px 16px; border-radius: 40px; font-weight: 600; font-size: 14px;
+      color: var(--text-secondary); transition: 0.2s; cursor: pointer;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .navbar .nav-links li a:hover,
+    .navbar .nav-links li a.active {
+      background: var(--accent); color: #fff;
+      box-shadow: 0 4px 14px rgba(108,99,255,0.3);
+    }
+    .navbar .nav-links li a i { font-size: 16px; width: 20px; text-align: center; }
+    .theme-selector {
+      display: flex; align-items: center; gap: 6px; margin-left: 12px;
+    }
+    .theme-selector select {
+      background: var(--input-bg); border: 1px solid var(--border-color);
+      color: var(--text-primary); padding: 6px 14px; border-radius: 40px;
+      font-weight: 600; font-size: 13px; cursor: pointer; outline: none;
+      transition: 0.2s; font-family: inherit;
+    }
+    .theme-selector select:hover { border-color: var(--accent); }
+    .theme-selector select option { background: var(--bg-body); color: var(--text-primary); }
+    .burger {
+      display: none; flex-direction: column; gap: 5px; cursor: pointer;
+      background: none; border: none; padding: 6px;
+    }
+    .burger span {
+      display: block; width: 26px; height: 3px;
+      background: var(--text-primary); border-radius: 4px; transition: 0.3s;
+    }
+
+    /* ===== PAGES ===== */
+    .page {
+      display: none; animation: fadeUp 0.5s ease; padding: 40px 0 60px;
+      position: relative; z-index: 1;
+    }
+    .page.active { display: block; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+    .page h1 {
+      font-size: 36px; font-weight: 800; margin-bottom: 12px; letter-spacing: -0.5px;
+    }
+    .page h1 i { color: var(--accent); margin-right: 12px; }
+    .page p { color: var(--text-secondary); line-height: 1.7; font-size: 16px; max-width: 700px; }
+
+    .card-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+      gap: 24px; margin-top: 30px;
+    }
+    .card {
+      background: var(--bg-card); backdrop-filter: blur(8px);
+      border-radius: var(--radius); padding: 28px 22px;
+      border: 1px solid var(--border-color); transition: 0.3s; box-shadow: var(--shadow);
+    }
+    .card:hover { transform: translateY(-6px); border-color: var(--accent); }
+    .card i { font-size: 32px; color: var(--accent); margin-bottom: 12px; }
+    .card h3 { font-size: 18px; margin-bottom: 8px; }
+    .card p { font-size: 14px; color: var(--text-secondary); }
+
+    /* ===== TODO ===== */
+    .todo-wrapper {
+      background: var(--bg-card); backdrop-filter: blur(8px);
+      border-radius: var(--radius); padding: 28px 24px;
+      border: 1px solid var(--border-color); max-width: 700px; margin-top: 20px;
+    }
+    .todo-form { display: flex; gap: 12px; margin-bottom: 20px; flex-wrap: wrap; }
+    .todo-form input {
+      flex:1; padding:14px 20px; border-radius:60px; border:1px solid var(--border-color);
+      background:var(--input-bg); color:var(--text-primary); font-size:15px; outline:none; transition:0.2s;
+      min-width:160px;
+    }
+    .todo-form input:focus { border-color:var(--accent); }
+    .todo-form button {
+      padding:14px 28px; border-radius:60px; border:none; background:var(--accent);
+      color:#fff; font-weight:700; cursor:pointer; transition:0.2s;
+      box-shadow:0 8px 20px rgba(108,99,255,0.3);
+    }
+    .todo-form button:hover { background:var(--accent-hover); transform:scale(1.02); }
+    .todo-list {
+      list-style:none; display:flex; flex-direction:column; gap:10px;
+      max-height:340px; overflow-y:auto; padding-right:4px;
+    }
+    .todo-list li {
+      display:flex; align-items:center; gap:14px; background:var(--input-bg);
+      padding:12px 18px; border-radius:30px; border:1px solid var(--border-color); transition:0.2s;
+    }
+    .todo-list li:hover { border-color:var(--accent); }
+    .todo-list li input[type="checkbox"] {
+      width:20px; height:20px; accent-color:var(--accent); cursor:pointer;
+    }
+    .todo-list li .todo-text { flex:1; font-weight:500; }
+    .todo-list li .todo-text.done { text-decoration:line-through; opacity:0.5; }
+    .todo-list li .delete-btn {
+      background:none; border:none; color:#ff6b9d; font-size:18px; cursor:pointer;
+      padding:4px 8px; border-radius:30px; transition:0.2s;
+    }
+    .todo-list li .delete-btn:hover { background:rgba(255,107,157,0.15); }
+    .todo-stats {
+      display:flex; justify-content:space-between; margin-top:18px;
+      color:var(--text-secondary); font-size:14px; font-weight:500;
+      border-top:1px solid var(--border-color); padding-top:16px;
+    }
+
+    /* ===== REPORT ===== */
+    .report-wrapper {
+      background: var(--bg-card); backdrop-filter: blur(8px);
+      border-radius: var(--radius); padding: 32px 28px;
+      border: 1px solid var(--border-color); max-width: 800px; margin-top: 20px;
+    }
+    .report-wrapper .form-group { margin-bottom: 20px; }
+    .report-wrapper label {
+      display: block; font-weight: 600; margin-bottom: 6px; color: var(--text-secondary);
+    }
+    .report-wrapper input,
+    .report-wrapper select,
+    .report-wrapper textarea {
+      width: 100%; padding: 14px 18px; border-radius: 60px;
+      border: 1px solid var(--border-color); background: var(--input-bg);
+      color: var(--text-primary); font-size: 15px; outline: none; transition: 0.2s;
+      font-family: inherit;
+    }
+    .report-wrapper textarea {
+      border-radius: 24px; min-height: 140px; resize: vertical;
+    }
+    .report-wrapper input:focus,
+    .report-wrapper select:focus,
+    .report-wrapper textarea:focus {
+      border-color: var(--accent);
+    }
+    .report-wrapper .sender-list {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px;
+    }
+    .report-wrapper .sender-tag {
+      background: var(--input-bg); padding: 8px 16px; border-radius: 40px;
+      border: 1px solid var(--border-color); font-size: 14px; display: flex;
+      align-items: center; gap: 10px;
+    }
+    .report-wrapper .sender-tag .remove-sender {
+      color: #ff6b9d; cursor: pointer; font-weight: 700;
+    }
+    .report-wrapper .add-sender-form {
+      display: flex; gap: 12px; flex-wrap: wrap; align-items: center;
+    }
+    .report-wrapper .add-sender-form input {
+      flex: 1; min-width: 200px;
+    }
+    .report-wrapper .add-sender-form button {
+      padding: 12px 24px; border-radius: 60px; border: none;
+      background: var(--accent); color: #fff; font-weight: 700;
+      cursor: pointer; transition: 0.2s;
+    }
+    .report-wrapper .add-sender-form button:hover { background: var(--accent-hover); }
+    .report-wrapper .btn-submit {
+      padding: 16px 36px; border-radius: 60px; border: none;
+      background: var(--accent); color: #fff; font-weight: 700; font-size: 16px;
+      cursor: pointer; transition: 0.2s; box-shadow: 0 8px 20px rgba(108,99,255,0.3);
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .report-wrapper .btn-submit:hover { background: var(--accent-hover); transform: scale(1.02); }
+    .report-wrapper .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .report-wrapper .status-msg {
+      margin-top: 18px; padding: 16px 20px; border-radius: 20px;
+      background: var(--input-bg); border-left: 4px solid var(--accent);
+      display: none;
+    }
+    .report-wrapper .status-msg.error { border-color: #ff6b9d; display: block; }
+    .report-wrapper .status-msg.success { border-color: #10b981; display: block; }
+
+    .config-wrapper {
+      background: var(--input-bg); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 28px;
+      border: 1px solid var(--border-color);
+    }
+    .config-wrapper .config-row {
+      display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
+    }
+    .config-wrapper .config-row input {
+      flex: 1; min-width: 150px; padding: 12px 16px; border-radius: 60px;
+      border: 1px solid var(--border-color); background: var(--bg-body);
+      color: var(--text-primary); font-size: 14px; outline: none;
+    }
+    .config-wrapper .config-row input:focus { border-color: var(--accent); }
+    .config-wrapper .config-row button {
+      padding: 12px 24px; border-radius: 60px; border: none;
+      background: var(--accent); color: #fff; font-weight: 700;
+      cursor: pointer; transition: 0.2s;
+    }
+    .config-wrapper .config-row button:hover { background: var(--accent-hover); }
+    .config-wrapper .config-status {
+      margin-top: 12px; font-size: 14px; color: var(--text-secondary);
+    }
+    .config-wrapper .config-status .success { color: #10b981; }
+    .config-wrapper .config-status .error { color: #ff6b9d; }
+
+    /* ===== TOOLS ===== */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+    .tools-grid .card input,
+    .tools-grid .card select,
+    .tools-grid .card textarea {
+      width: 100%;
+      margin: 6px 0;
+      padding: 10px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border-color);
+      background: var(--input-bg);
+      color: var(--text-primary);
+      font-size: 14px;
+      outline: none;
+      font-family: inherit;
+    }
+    .tools-grid .card input:focus,
+    .tools-grid .card select:focus,
+    .tools-grid .card textarea:focus {
+      border-color: var(--accent);
+    }
+    .tools-grid .card .deploy-btn {
+      width: 100%;
+      padding: 12px;
+      font-size: 14px;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      border-radius: 60px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .tools-grid .card .deploy-btn:hover {
+      background: var(--accent-hover);
+      transform: scale(1.02);
+    }
+    .tools-grid .card .result {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      word-break: break-all;
+    }
+
+    /* ===== DEPLOY ===== */
+    .deploy-grid {
+      display: flex; flex-wrap: wrap; gap: 24px; margin-top: 28px;
+    }
+    .deploy-card {
+      background: var(--bg-card); backdrop-filter: blur(8px);
+      border-radius: var(--radius); padding: 30px 28px;
+      border: 1px solid var(--border-color); flex: 1 1 240px;
+      text-align: center; transition: 0.3s; box-shadow: var(--shadow);
+    }
+    .deploy-card:hover { transform: translateY(-8px); border-color: var(--accent); }
+    .deploy-card i { font-size: 44px; color: var(--accent); margin-bottom: 16px; }
+    .deploy-card h3 { font-size: 20px; margin-bottom: 8px; }
+    .deploy-card p { font-size: 14px; color: var(--text-secondary); margin-bottom: 18px; }
+    .deploy-btn {
+      display: inline-block; padding: 12px 28px; border-radius: 60px;
+      background: var(--accent); color: #fff; font-weight: 700; border: none;
+      cursor: pointer; transition: 0.2s; font-size: 15px;
+      box-shadow: 0 8px 20px rgba(108,99,255,0.25);
+    }
+    .deploy-btn:hover { background: var(--accent-hover); transform: scale(1.03); }
+    .deploy-btn i { margin-right: 8px; font-size: 18px; }
+
+    /* ===== CUSTOMIZE BG ===== */
+    .bg-options {
+      display: flex; flex-wrap: wrap; gap: 20px; margin: 24px 0;
+    }
+    .bg-option {
+      background: var(--bg-card); backdrop-filter: blur(8px);
+      border-radius: var(--radius); padding: 24px 22px;
+      border: 2px solid transparent; transition: 0.3s; flex: 1 1 200px;
+      cursor: pointer; box-shadow: var(--shadow);
+    }
+    .bg-option:hover { border-color: var(--accent); transform: translateY(-4px); }
+    .bg-option.active { border-color: var(--accent); background: var(--input-bg); }
+    .bg-option i { font-size: 32px; color: var(--accent); margin-bottom: 10px; }
+    .bg-option h4 { font-size: 16px; margin-bottom: 4px; }
+    .bg-option p { font-size: 13px; color: var(--text-secondary); }
+    .bg-control {
+      margin-top: 20px; display: flex; flex-wrap: wrap; gap: 16px;
+      align-items: center;
+    }
+    .bg-control input[type="text"],
+    .bg-control input[type="file"] {
+      padding: 12px 18px; border-radius: 60px;
+      border: 1px solid var(--border-color); background: var(--input-bg);
+      color: var(--text-primary); font-size: 14px; outline: none; flex: 1;
+      min-width: 200px;
+    }
+    .bg-control input:focus { border-color: var(--accent); }
+    .bg-control label {
+      background: var(--accent); color: #fff; padding: 12px 24px;
+      border-radius: 60px; font-weight: 600; cursor: pointer;
+      transition: 0.2s; display: inline-flex; align-items: center; gap: 8px;
+    }
+    .bg-control label:hover { background: var(--accent-hover); }
+    .bg-control label i { font-size: 18px; }
+
+    /* ===== CONTACT ===== */
+    .contact-info { margin-top: 24px; display: flex; flex-direction: column; gap: 14px; }
+    .contact-info a {
+      display: inline-flex; align-items: center; gap: 12px;
+      color: var(--text-primary); font-weight:500; padding:12px 20px;
+      border-radius:40px; background:var(--bg-card); border:1px solid var(--border-color);
+      transition:0.2s; width:fit-content;
+    }
+    .contact-info a:hover { border-color:var(--accent); transform:translateX(6px); }
+
+    /* ===== LOGIN & REGISTER OVERLAYS ===== */
+    #loginOverlay {
+      display: flex;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg-body);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    #loginOverlay .login-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 340px;
+      max-width: 90%;
+    }
+    #loginOverlay .login-box input,
+    #loginOverlay .login-box select {
+      padding: 14px 20px;
+      border-radius: 60px;
+      border: 1px solid var(--border-color);
+      background: var(--input-bg);
+      color: var(--text-primary);
+      font-size: 16px;
+      outline: none;
+      font-family: inherit;
+    }
+    #loginOverlay .login-box input:focus,
+    #loginOverlay .login-box select:focus {
+      border-color: var(--accent);
+    }
+    #loginOverlay .login-box .deploy-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      text-align: center;
+    }
+    #loginStatus {
+      color: var(--text-secondary);
+      font-size: 14px;
+      text-align: center;
+    }
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin: 4px 0;
+    }
+    .login-divider::before, .login-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border-color);
+    }
+    .google-btn {
+      background: #fff !important;
+      color: #333 !important;
+      border: 1px solid #ddd !important;
+    }
+    .google-btn:hover {
+      background: #f5f5f5 !important;
+      transform: scale(1.02);
+    }
+    .google-btn i {
+      color: #ea4335;
+    }
+
+    /* ===== REGISTER OVERLAY ===== */
+    #registerOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: var(--bg-body);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+    }
+    #registerOverlay .register-box {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 340px;
+      max-width: 90%;
+    }
+    #registerOverlay .register-box input {
+      padding: 14px 20px;
+      border-radius: 60px;
+      border: 1px solid var(--border-color);
+      background: var(--input-bg);
+      color: var(--text-primary);
+      font-size: 16px;
+      outline: none;
+    }
+    #registerOverlay .register-box input:focus {
+      border-color: var(--accent);
+    }
+    #registerOverlay .register-box .deploy-btn {
+      width: 100%;
+      padding: 14px;
+      font-size: 16px;
+      text-align: center;
+    }
+    #registerStatus {
+      color: var(--text-secondary);
+      font-size: 14px;
+      text-align: center;
+    }
+
+    /* ===== MAINTENANCE OVERLAY ===== */
+    #maintenanceOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      background: var(--bg-body);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 16px;
+    }
+    #maintenanceOverlay i { font-size: 64px; color: #f59e0b; }
+    #maintenanceOverlay h1 { font-size: 32px; }
+    #maintenanceOverlay p { color: var(--text-secondary); }
+
+    /* ===== HIDE MAIN CONTENT ===== */
+    #mainContent { display: none; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .burger { display: flex; }
+      .navbar .nav-links {
+        position: absolute; top:74px; left:0; right:0; flex-direction:column;
+        background:var(--nav-bg); backdrop-filter:blur(18px); padding:20px 24px;
+        gap:6px; display:none; border-bottom:1px solid var(--border-color);
+        max-height: 80vh; overflow-y: auto;
+      }
+      .navbar .nav-links.open { display:flex; }
+      .navbar .nav-links li a { width:100%; justify-content:center; }
+      .theme-selector { margin-left:0; margin-top:8px; width:100%; }
+      .theme-selector select { width:100%; }
+      .page h1 { font-size:28px; }
+      .config-wrapper .config-row { flex-direction: column; }
+      .tools-grid { grid-template-columns: 1fr; }
+      #loginOverlay .login-box { width: 100%; }
+      #registerOverlay .register-box { width: 100%; }
+    }
+    @media (min-width:769px) { .burger { display:none; } }
+
+    ::-webkit-scrollbar { width:6px; }
+    ::-webkit-scrollbar-track { background:var(--bg-body); }
+    ::-webkit-scrollbar-thumb { background:var(--accent); border-radius:20px; }
+  </style>
+</head>
+<body>
+
+<!-- BACKGROUND VIDEO -->
+<video id="bgVideo" autoplay muted loop playsinline>
+  <source src="https://files.catbox.moe/47nhyc.mp4" type="video/mp4">
+</video>
+<canvas id="particleCanvas"></canvas>
+
+<!-- ===== LOGIN OVERLAY ===== -->
+<div id="loginOverlay">
+  <div style="text-align:center;">
+    <i class="fas fa-cube" style="font-size:64px; color:var(--accent);"></i>
+    <h1 style="font-size:36px; margin-top:12px;">Myticals Web Pro</h1>
+    <p style="color:var(--text-secondary);">Login dengan username & password</p>
+  </div>
+  <div class="login-box">
+    <input type="text" id="loginUsername" placeholder="Username">
+    <input type="password" id="loginPassword" placeholder="Password">
+    <button id="loginBtn" class="deploy-btn"><i class="fas fa-sign-in-alt"></i> Login</button>
+    <div class="login-divider">atau</div>
+    <button id="googleLoginBtn" class="deploy-btn google-btn"><i class="fab fa-google"></i> Login dengan Google</button>
+    <div id="loginStatus">Masukkan username & password, atau login dengan Google</div>
+    <div style="font-size:13px; color:var(--text-secondary);">
+      <i class="fas fa-info-circle"></i> Admin: arga / arga123
+    </div>
+  </div>
+</div>
+
+<!-- ===== REGISTER OVERLAY (setelah Google login) ===== -->
+<div id="registerOverlay">
+  <div style="text-align:center;">
+    <i class="fas fa-user-plus" style="font-size:48px; color:var(--accent);"></i>
+    <h2 style="margin-top:12px;">Buat Akun</h2>
+    <p style="color:var(--text-secondary);">Set username & password untuk login selanjutnya</p>
+  </div>
+  <div class="register-box">
+    <input type="text" id="registerUsername" placeholder="Username baru">
+    <input type="password" id="registerPassword" placeholder="Password">
+    <input type="password" id="registerConfirm" placeholder="Konfirmasi Password">
+    <button id="registerBtn" class="deploy-btn"><i class="fas fa-check-circle"></i> Buat Akun</button>
+    <div id="registerStatus"></div>
+  </div>
+</div>
+
+<!-- ===== MAINTENANCE OVERLAY ===== -->
+<div id="maintenanceOverlay">
+  <i class="fas fa-tools"></i>
+  <h1>Sedang Maintenance</h1>
+  <p>Website sedang dalam perbaikan. Kembali lagi nanti ya.</p>
+</div>
+
+<!-- ===== KONTEN UTAMA ===== -->
+<div id="mainContent">
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo"><i class="fas fa-cube"></i> Myticals Web Pro</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a class="active" data-page="home"><i class="fas fa-home"></i> Home</a></li>
+      <li><a data-page="about"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a data-page="services"><i class="fas fa-server"></i> Services</a></li>
+      <li><a data-page="todo"><i class="fas fa-tasks"></i> Todo</a></li>
+      <li><a data-page="customize"><i class="fas fa-image"></i> Customize</a></li>
+      <li><a data-page="report"><i class="fas fa-flag"></i> Report Scam</a></li>
+      <li id="adminNav" style="display:none;"><a data-page="admin"><i class="fas fa-user-cog"></i> Admin</a></li>
+      <li><a data-page="tools"><i class="fas fa-tools"></i> Tools</a></li>
+      <li><a data-page="deploy"><i class="fas fa-cloud-upload-alt"></i> Deploy</a></li>
+      <li><a data-page="contact"><i class="fas fa-envelope"></i> Contact</a></li>
+      <li class="theme-selector">
+        <select id="themeSelect">
+          <option value="dark"><i class="fas fa-moon"></i> Dark</option>
+          <option value="light"><i class="fas fa-sun"></i> Light</option>
+          <option value="blue"><i class="fas fa-water"></i> Blue</option>
+          <option value="pink"><i class="fas fa-flower"></i> Pink</option>
+          <option value="green"><i class="fas fa-leaf"></i> Green</option>
+        </select>
+      </li>
+      <li style="margin-left:8px;">
+        <button id="logoutBtn" class="deploy-btn" style="padding:6px 16px; font-size:13px; background:#ff6b9d;">
+          <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+      </li>
+    </ul>
+    <button class="burger" id="burgerBtn"><span></span><span></span><span></span></button>
+  </nav>
+
+  <!-- PAGES -->
+  <div class="container">
+
+    <!-- HOME -->
+    <section class="page active" id="page-home">
+      <h1><i class="fas fa-rocket"></i> Selamat datang di Myticals Web Pro</h1>
+      <p>Website super canggih dengan login hybrid, admin panel, 11 tools, dan background video bergerak.</p>
+      <div class="card-grid">
+        <div class="card"><i class="fas fa-palette"></i><h3>5 Tema Warna</h3><p>Ganti suasana.</p></div>
+        <div class="card"><i class="fas fa-sync-alt"></i><h3>Todo</h3><p>Task manager.</p></div>
+        <div class="card"><i class="fas fa-mobile-alt"></i><h3>Responsive</h3><p>Rapi di semua device.</p></div>
+        <div class="card"><i class="fas fa-flag"></i><h3>Report Scam</h3><p>EmailJS + IndexedDB.</p></div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="page" id="page-about">
+      <h1><i class="fas fa-address-card"></i> Tentang Kami</h1>
+      <p>Myticals Web Pro — dibangun tanpa backend, murni vanilla JS + IndexedDB. Sistem login hybrid: username/password atau Google.</p>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="page" id="page-services">
+      <h1><i class="fas fa-cogs"></i> Layanan</h1>
+      <div class="card-grid">
+        <div class="card"><i class="fas fa-shield-alt"></i><h3>Keamanan</h3><p>Data lokal terenkripsi.</p></div>
+        <div class="card"><i class="fas fa-chart-line"></i><h3>Optimasi</h3><p>Kode cepat dan ringan.</p></div>
+        <div class="card"><i class="fas fa-robot"></i><h3>AI Integration</h3><p>Bisa konek ke model lokal.</p></div>
+      </div>
+    </section>
+
+    <!-- TODO -->
+    <section class="page" id="page-todo">
+      <h1><i class="fas fa-list-check"></i> To-Do Ninja</h1>
+      <div class="todo-wrapper">
+        <div class="todo-form">
+          <input type="text" id="todoInput" placeholder="Tulis tugas baru..." autofocus>
+          <button id="todoAddBtn"><i class="fas fa-plus"></i> Tambah</button>
+        </div>
+        <ul class="todo-list" id="todoList"></ul>
+        <div class="todo-stats">
+          <span><i class="fas fa-list-ul"></i> Total: <strong id="totalCount">0</strong></span>
+          <span><i class="fas fa-check-circle"></i> Selesai: <strong id="doneCount">0</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CUSTOMIZE BG -->
+    <section class="page" id="page-customize">
+      <h1><i class="fas fa-image"></i> Kustomisasi Background</h1>
+      <p>Pilih jenis background di bawah ini (video default sudah berjalan).</p>
+      <div class="bg-options">
+        <div class="bg-option active" data-bgtype="video"><i class="fas fa-video"></i><h4>Video</h4><p>URL video / YouTube</p></div>
+        <div class="bg-option" data-bgtype="image"><i class="fas fa-file-image"></i><h4>Gambar</h4><p>Upload file</p></div>
+        <div class="bg-option" data-bgtype="particle"><i class="fas fa-circle-notch"></i><h4>Partikel</h4><p>Animasi bergerak</p></div>
+        <div class="bg-option" data-bgtype="default"><i class="fas fa-paint-brush"></i><h4>Default</h4><p>Warna tema</p></div>
+      </div>
+      <div id="bgControls" class="bg-control"></div>
+    </section>
+
+    <!-- REPORT SCAM -->
+    <section class="page" id="page-report">
+      <h1><i class="fas fa-flag"></i> Report Scam</h1>
+      <div class="report-wrapper">
+        <div class="config-wrapper">
+          <h4><i class="fas fa-key"></i> Konfigurasi EmailJS</h4>
+          <div class="config-row">
+            <input type="text" id="configPublicKey" placeholder="Public Key">
+            <input type="text" id="configServiceID" placeholder="Service ID">
+            <input type="text" id="configTemplateID" placeholder="Template ID">
+            <button id="saveConfigBtn"><i class="fas fa-save"></i> Simpan</button>
+          </div>
+          <div id="configStatus" class="config-status"><span id="configMsg">Isi untuk kirim via EmailJS.</span></div>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-envelope"></i> Daftar Pengirim</label>
+          <div class="sender-list" id="senderList"></div>
+          <div class="add-sender-form">
+            <input type="email" id="newSenderInput" placeholder="Masukkan email sender...">
+            <button id="addSenderBtn"><i class="fas fa-plus-circle"></i> Add Sender</button>
+          </div>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-user"></i> Pilih Sender</label>
+          <select id="senderSelect"><option value="">-- Pilih sender --</option></select>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-bullseye"></i> Platform</label>
+          <select id="platformSelect">
+            <option value="telegram">Telegram</option>
+            <option value="binance">Binance</option>
+            <option value="monzo">Monzo</option>
+            <option value="other">Lainnya</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-at"></i> Email Tujuan</label>
+          <input type="email" id="toEmail" placeholder="abuse@telegram.org" value="abuse@telegram.org">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-heading"></i> Subject</label>
+          <input type="text" id="subjectInput" placeholder="Subject..." value="Laporan Akun Scam">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-user-tag"></i> Username/ID Dilaporkan</label>
+          <input type="text" id="reportedUser" placeholder="Username / ID...">
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-file-alt"></i> Isi Laporan</label>
+          <textarea id="messageInput" placeholder="Deskripsikan...">Saya melaporkan akun ini karena scam.</textarea>
+        </div>
+        <div style="display:flex; gap:12px; flex-wrap:wrap;">
+          <button id="sendReportBtn" class="btn-submit"><i class="fas fa-paper-plane"></i> Kirim via EmailJS</button>
+          <button id="mailtoBtn" class="btn-submit" style="background:var(--text-secondary);"><i class="fas fa-envelope-open-text"></i> Buka Client</button>
+          <button id="exportCsvBtn" class="btn-submit" style="background:#10b981;"><i class="fas fa-file-csv"></i> CSV</button>
+          <button id="exportJsonBtn" class="btn-submit" style="background:#f59e0b;"><i class="fas fa-file-code"></i> JSON</button>
+        </div>
+        <div id="reportStatus" class="status-msg"></div>
+      </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section class="page" id="page-admin">
+      <h1><i class="fas fa-user-cog"></i> Panel Admin</h1>
+      <p>Kelola website, lihat laporan, dan kontrol maintenance.</p>
+      <div style="margin-top:24px; display:flex; flex-direction:column; gap:24px;">
+        <div style="background:var(--bg-card); padding:24px; border-radius:var(--radius); border:1px solid var(--border-color);">
+          <h3><i class="fas fa-tools"></i> Mode Maintenance</h3>
+          <div style="margin-top:12px; display:flex; gap:12px; align-items:center;">
+            <span>Status: <strong id="maintenanceStatus">Nonaktif</strong></span>
+            <button id="toggleMaintenanceBtn" class="deploy-btn" style="background:#f59e0b;"><i class="fas fa-sync-alt"></i> Toggle</button>
+          </div>
+        </div>
+        <div style="background:var(--bg-card); padding:24px; border-radius:var(--radius); border:1px solid var(--border-color);">
+          <h3><i class="fas fa-list"></i> Semua Laporan</h3>
+          <div id="adminReports" style="max-height:300px; overflow-y:auto; margin-top:12px;"></div>
+        </div>
+        <div style="background:var(--bg-card); padding:24px; border-radius:var(--radius); border:1px solid var(--border-color);">
+          <h3><i class="fas fa-envelope"></i> Daftar Sender</h3>
+          <div id="adminSenders" style="margin-top:12px;"></div>
+        </div>
+        <div style="background:var(--bg-card); padding:24px; border-radius:var(--radius); border:1px solid var(--border-color);">
+          <h3><i class="fas fa-device"></i> Info Device Terakhir</h3>
+          <pre id="adminDeviceInfo" style="color:var(--text-secondary); font-size:14px; margin-top:12px; white-space:pre-wrap;"></pre>
+        </div>
+        <div style="background:var(--bg-card); padding:24px; border-radius:var(--radius); border:1px solid var(--border-color);">
+          <h3><i class="fas fa-users"></i> Daftar User</h3>
+          <div id="adminUsers" style="margin-top:12px;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOOLS SUPER -->
+    <section class="page" id="page-tools">
+      <h1><i class="fas fa-tools"></i> Super Tools</h1>
+      <p>11 tools canggih dalam satu tempat.</p>
+      <div class="tools-grid">
+        <!-- 1. Upload to URL -->
+        <div class="card">
+          <i class="fas fa-upload"></i>
+          <h3>Upload to URL</h3>
+          <p>Upload file → dapatkan link</p>
+          <input type="file" id="uploadFile">
+          <button class="deploy-btn" id="uploadToUrlBtn"><i class="fas fa-link"></i> Generate URL</button>
+          <div class="result" id="uploadResult"></div>
+        </div>
+        <!-- 2. Download from URL -->
+        <div class="card">
+          <i class="fas fa-download"></i>
+          <h3>Download from URL</h3>
+          <p>Download video/gambar dari link</p>
+          <input type="text" id="downloadUrlInput" placeholder="https://example.com/video.mp4">
+          <button class="deploy-btn" id="downloadFromUrlBtn"><i class="fas fa-cloud-download-alt"></i> Download</button>
+          <div class="result" id="downloadResult"></div>
+        </div>
+        <!-- 3. Encrypt File -->
+        <div class="card">
+          <i class="fas fa-lock"></i>
+          <h3>Encrypt File</h3>
+          <p>Enkripsi file dengan password</p>
+          <input type="file" id="encryptFileInput">
+          <input type="password" id="encryptPassword" placeholder="Password">
+          <button class="deploy-btn" id="encryptFileBtn"><i class="fas fa-lock"></i> Encrypt</button>
+          <div class="result" id="encryptResult"></div>
+        </div>
+        <!-- 4. Decrypt File -->
+        <div class="card">
+          <i class="fas fa-unlock"></i>
+          <h3>Decrypt File</h3>
+          <p>Dekripsi file terenkripsi</p>
+          <input type="file" id="decryptFileInput">
+          <input type="password" id="decryptPassword" placeholder="Password">
+          <button class="deploy-btn" id="decryptFileBtn"><i class="fas fa-unlock"></i> Decrypt</button>
+          <div class="result" id="decryptResult"></div>
+        </div>
+        <!-- 5. Build to APK -->
+        <div class="card">
+          <i class="fab fa-android"></i>
+          <h3>Build to APK</h3>
+          <p>Ubah website jadi Android App</p>
+          <input type="text" id="apkName" placeholder="Nama Aplikasi" value="MyticalsApp">
+          <button class="deploy-btn" id="buildApkBtn"><i class="fab fa-android"></i> Build APK</button>
+          <div class="result" id="apkResult"></div>
+        </div>
+        <!-- 6. Build to EXE -->
+        <div class="card">
+          <i class="fab fa-windows"></i>
+          <h3>Build to EXE</h3>
+          <p>Ubah website jadi Windows App</p>
+          <button class="deploy-btn" id="buildExeBtn"><i class="fab fa-windows"></i> Build EXE</button>
+          <div class="result" id="exeResult"></div>
+        </div>
+        <!-- 7. QR Code Generator -->
+        <div class="card">
+          <i class="fas fa-qrcode"></i>
+          <h3>QR Code Generator</h3>
+          <p>Buat QR dari URL</p>
+          <input type="text" id="qrInput" placeholder="https://example.com" value="https://myticals.web">
+          <button class="deploy-btn" id="generateQrBtn"><i class="fas fa-qrcode"></i> Generate QR</button>
+          <div class="result" id="qrResult" style="text-align:center;"></div>
+        </div>
+        <!-- 8. Screen Capture -->
+        <div class="card">
+          <i class="fas fa-camera"></i>
+          <h3>Screen Capture</h3>
+          <p>Screenshot halaman website</p>
+          <button class="deploy-btn" id="screenCaptureBtn"><i class="fas fa-camera"></i> Capture</button>
+          <div class="result" id="screenResult"></div>
+        </div>
+        <!-- 9. Text to Speech -->
+        <div class="card">
+          <i class="fas fa-volume-up"></i>
+          <h3>Text to Speech</h3>
+          <p>Ubah teks jadi suara</p>
+          <textarea id="ttsInput" placeholder="Tulis teks...">Halo, selamat datang di Myticals Web Pro!</textarea>
+          <button class="deploy-btn" id="ttsBtn"><i class="fas fa-volume-up"></i> Play</button>
+        </div>
+        <!-- 10. Clipboard Manager -->
+        <div class="card">
+          <i class="fas fa-clipboard-list"></i>
+          <h3>Clipboard Manager</h3>
+          <p>Copy teks dengan history</p>
+          <input type="text" id="clipboardInput" placeholder="Tulis teks...">
+          <button class="deploy-btn" id="copyBtn"><i class="fas fa-copy"></i> Copy</button>
+          <div class="result" id="clipboardHistory" style="max-height:100px; overflow-y:auto;"></div>
+        </div>
+        <!-- 11. File Converter -->
+        <div class="card">
+          <i class="fas fa-exchange-alt"></i>
+          <h3>File Converter</h3>
+          <p>Konversi gambar ke format lain</p>
+          <input type="file" id="convertFileInput" accept="image/*">
+          <select id="convertFormat">
+            <option value="image/png">PNG</option>
+            <option value="image/jpeg">JPEG</option>
+            <option value="image/webp">WebP</option>
+            <option value="image/bmp">BMP</option>
+          </select>
+          <button class="deploy-btn" id="convertFileBtn"><i class="fas fa-exchange-alt"></i> Convert</button>
+          <div class="result" id="convertResult"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DEPLOY -->
+    <section class="page" id="page-deploy">
+      <h1><i class="fas fa-cloud-upload-alt"></i> Deploy Website</h1>
+      <div class="deploy-grid">
+        <div class="deploy-card">
+          <i class="fab fa-netlify"></i><h3>Netlify Drop</h3>
+          <a href="https://app.netlify.com/drop" target="_blank" class="deploy-btn"><i class="fas fa-external-link-alt"></i> Deploy</a>
+        </div>
+        <div class="deploy-card">
+          <i class="fab fa-vercel"></i><h3>Vercel</h3>
+          <a href="https://vercel.com/new" target="_blank" class="deploy-btn"><i class="fas fa-external-link-alt"></i> Deploy</a>
+        </div>
+        <div class="deploy-card">
+          <i class="fas fa-file-download"></i><h3>Download</h3>
+          <button id="downloadBtn" class="deploy-btn"><i class="fas fa-download"></i> index.html</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="page" id="page-contact">
+      <h1><i class="fas fa-paper-plane"></i> Kontak</h1>
+      <div class="contact-info">
+        <a href="#"><i class="fab fa-instagram"></i> @arga_not_dev</a>
+        <a href="#"><i class="fab fa-github"></i> github.com/arga-not-dev</a>
+        <a href="#"><i class="fas fa-envelope"></i> arga@myticals.web</a>
+      </div>
+    </section>
+
+  </div><!-- /container -->
+</div><!-- /mainContent -->
+
+<!-- ============================================================ -->
+<!-- JAVASCRIPT (SEMUA DALAM SATU FILE) -->
+<!-- ============================================================ -->
+<script>
+  // ================================================================
+  //  DB.JS — IndexedDB Handler (dengan user store yang lengkap)
+  // ================================================================
+  const DB_NAME = 'MyticalsDB';
+  const DB_VERSION = 3;
+
+  class MyticalsDB {
+    constructor() {
+      this.db = null;
+      this.ready = this._init();
+    }
+
+    _init() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, DB_VERSION);
+        request.onupgradeneeded = (e) => {
+          const db = e.target.result;
+          // Users store: username, passwordHash, googleId (optional), registered (boolean), role (admin/user), name, email
+          if (!db.objectStoreNames.contains('users')) {
+            const store = db.createObjectStore('users', { keyPath: 'username' });
+            store.createIndex('googleId', 'googleId', { unique: true });
+          }
+          if (!db.objectStoreNames.contains('reports')) {
+            const store = db.createObjectStore('reports', { keyPath: 'id', autoIncrement: true });
+            store.createIndex('platform', 'platform', { unique: false });
+            store.createIndex('timestamp', 'timestamp', { unique: false });
+          }
+          if (!db.objectStoreNames.contains('senders')) {
+            db.createObjectStore('senders', { keyPath: 'email' });
+          }
+          if (!db.objectStoreNames.contains('config')) {
+            db.createObjectStore('config', { keyPath: 'key' });
+          }
+          if (!db.objectStoreNames.contains('maintenance')) {
+            db.createObjectStore('maintenance', { keyPath: 'id' });
+          }
+          if (!db.objectStoreNames.contains('device')) {
+            db.createObjectStore('device', { keyPath: 'id' });
+          }
+          if (!db.objectStoreNames.contains('files')) {
+            db.createObjectStore('files', { keyPath: 'id', autoIncrement: true });
+          }
+        };
+        request.onsuccess = (e) => {
+          this.db = e.target.result;
+          resolve(this.db);
+        };
+        request.onerror = (e) => reject(e.target.error);
+      });
+    }
+
+    // --- Users ---
+    async addUser(userData) {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('users', 'readwrite');
+        const store = tx.objectStore('users');
+        const request = store.put(userData);
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+    }
+    async getUser(username) {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('users', 'readonly');
+        const store = tx.objectStore('users');
+        const request = store.get(username);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+    async getUserByGoogleId(googleId) {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('users', 'readonly');
+        const store = tx.objectStore('users');
+        const index = store.index('googleId');
+        const request = index.get(googleId);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+    async getAllUsers() {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('users', 'readonly');
+        const store = tx.objectStore('users');
+        const request = store.getAll();
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+    async updateUser(username, data) {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('users', 'readwrite');
+        const store = tx.objectStore('users');
+        const request = store.get(username);
+        request.onsuccess = () => {
+          const user = request.result;
+          if (!user) { reject(new Error('User tidak ditemukan')); return; }
+          Object.assign(user, data);
+          const putReq = store.put(user);
+          putReq.onsuccess = () => resolve();
+          putReq.onerror = () => reject(putReq.error);
+        };
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    // --- Reports ---
+    async addReport(data) {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('reports', 'readwrite');
+        const store = tx.objectStore('reports');
+        const request = store.add({ ...data, timestamp: Date.now() });
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+    async getAllReports() {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('reports', 'readonly');
+        const store = tx.objectStore('reports');
+        const request = store.getAll();
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    // --- Senders ---
+    async addSender(email) {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('senders', 'readwrite');
+        const store = tx.objectStore('senders');
+        const request = store.put({ email });
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+    }
+    async getSenders() {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('senders', 'readonly');
+        const store = tx.objectStore('senders');
+        const request = store.getAll();
+        request.onsuccess = () => resolve(request.result.map(r => r.email));
+        request.onerror = () => reject(request.error);
+      });
+    }
+    async removeSender(email) {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('senders', 'readwrite');
+        const store = tx.objectStore('senders');
+        const request = store.delete(email);
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    // --- Config ---
+    async setConfig(key, value) {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('config', 'readwrite');
+        const store = tx.objectStore('config');
+        const request = store.put({ key, value });
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+    }
+    async getConfig(key) {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('config', 'readonly');
+        const store = tx.objectStore('config');
+        const request = store.get(key);
+        request.onsuccess = () => resolve(request.result ? request.result.value : null);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    // --- Maintenance ---
+    async setMaintenance(flag) {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('maintenance', 'readwrite');
+        const store = tx.objectStore('maintenance');
+        const request = store.put({ id: 'flag', value: flag });
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+    }
+    async getMaintenance() {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('maintenance', 'readonly');
+        const store = tx.objectStore('maintenance');
+        const request = store.get('flag');
+        request.onsuccess = () => resolve(request.result ? request.result.value : false);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    // --- Device ---
+    async setDeviceInfo(info) {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('device', 'readwrite');
+        const store = tx.objectStore('device');
+        const request = store.put({ id: 'lastDevice', ...info, timestamp: Date.now() });
+        request.onsuccess = () => resolve();
+        request.onerror = () => reject(request.error);
+      });
+    }
+    async getDeviceInfo() {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('device', 'readonly');
+        const store = tx.objectStore('device');
+        const request = store.get('lastDevice');
+        request.onsuccess = () => resolve(request.result || null);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    // --- Files ---
+    async getFile(id) {
+      await this.ready;
+      return new Promise((resolve, reject) => {
+        const tx = this.db.transaction('files', 'readonly');
+        const store = tx.objectStore('files');
+        const request = store.get(id);
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+  }
+
+  const db = new MyticalsDB();
+
+  // ================================================================
+  //  AUTH.JS — Hybrid Login (Username/Password + Google)
+  // ================================================================
+  (function() {
+    const loginOverlay = document.getElementById('loginOverlay');
+    const registerOverlay = document.getElementById('registerOverlay');
+    const loginBtn = document.getElementById('loginBtn');
+    const googleLoginBtn = document.getElementById('googleLoginBtn');
+    const loginStatus = document.getElementById('loginStatus');
+    const loginUsername = document.getElementById('loginUsername');
+    const loginPassword = document.getElementById('loginPassword');
+
+    const registerBtn = document.getElementById('registerBtn');
+    const registerStatus = document.getElementById('registerStatus');
+    const registerUsername = document.getElementById('registerUsername');
+    const registerPassword = document.getElementById('registerPassword');
+    const registerConfirm = document.getElementById('registerConfirm');
+
+    const mainContent = document.getElementById('mainContent');
+    const maintenanceOverlay = document.getElementById('maintenanceOverlay');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const adminNav = document.getElementById('adminNav');
+
+    let currentUser = null;
+    let currentGoogleUser = null; // data dari Google sebelum registrasi
+    let maintenanceInterval = null;
+
+    // ---- Helper hash password (fallback Base64) ----
+    async function hashPassword(password) {
+      try {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(password);
+        const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      } catch (e) {
+        return btoa(password);
+      }
+    }
+
+    // ---- Device info ----
+    function getDeviceInfo() {
+      return {
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        language: navigator.language,
+        screen: `${window.screen.width}x${window.screen.height}`,
+        timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        timestamp: new Date().toISOString()
+      };
+    }
+
+    // ---- Kirim notifikasi ke bot (opsional) ----
+    const BOT_TOKEN = '8730812849:AAF9MhXc990mJOmABFmRdqfk4b2grs0MCuE';
+    const CHAT_ID = '1478839005';
+    async function sendToBot(text) {
+      try {
+        await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
+        });
+      } catch (e) { console.warn('Bot notifikasi error:', e); }
+    }
+
+    // ---- Login normal (username + password) ----
+    async function loginWithPassword() {
+      const username = loginUsername.value.trim();
+      const password = loginPassword.value.trim();
+      if (!username || !password) {
+        loginStatus.textContent = '❌ Isi username dan password.';
+        return;
+      }
+      loginStatus.textContent = '⏳ Memproses...';
+      loginBtn.disabled = true;
+
+      try {
+        const user = await db.getUser(username);
+        if (!user) {
+          loginStatus.textContent = '❌ Username tidak ditemukan.';
+          loginBtn.disabled = false;
+          return;
+        }
+        if (!user.registered) {
+          loginStatus.textContent = '❌ Akun belum terdaftar. Login dengan Google dulu.';
+          loginBtn.disabled = false;
+          return;
+        }
+        const hashedInput = await hashPassword(password);
+        if (user.passwordHash !== hashedInput) {
+          loginStatus.textContent = '❌ Password salah.';
+          loginBtn.disabled = false;
+          return;
+        }
+        // Sukses
+        currentUser = user;
+        sessionStorage.setItem('myticalsUser', username);
+        const deviceInfo = getDeviceInfo();
+        await db.setDeviceInfo(deviceInfo);
+        await sendToBot(`✅ <b>Login sukses</b>\n👤 User: ${username}\n📱 ${deviceInfo.platform}\n⏰ ${deviceInfo.timestamp}`);
+        showMainContent();
+      } catch (error) {
+        loginStatus.textContent = `❌ Error: ${error.message}`;
+        loginBtn.disabled = false;
+      }
+    }
+
+    // ---- Login dengan Google (menggunakan OAuth popup) ----
+    // Karena kita tidak punya backend, kita gunakan fallback: minta user memasukkan email Google
+    // Untuk demo, kita gunakan prompt sederhana (atau bisa pakai Google Identity Services)
+    // Di sini kita gunakan cara sederhana: user klik Google, lalu masukkan email
+    // Setelah itu cek apakah email sudah terdaftar sebagai user
+    function loginWithGoogle() {
+      // Simulasi login Google dengan prompt email
+      const email = prompt('Masukkan email Google Anda (simulasi):');
+      if (!email) return;
+      if (!email.includes('@')) {
+        loginStatus.textContent = '❌ Email tidak valid.';
+        return;
+      }
+      loginStatus.textContent = '⏳ Memproses Google login...';
+      // Cek apakah user sudah terdaftar dengan googleId = email (fallback)
+      // Karena kita tidak punya Google OAuth real, kita simpan email sebagai googleId
+      // user akan diarahkan ke registrasi jika belum punya akun
+      (async () => {
+        try {
+          // Cek apakah email sudah terdaftar sebagai user
+          const allUsers = await db.getAllUsers();
+          const existing = allUsers.find(u => u.googleId === email || u.username === email);
+          if (existing && existing.registered) {
+            // Login langsung
+            currentUser = existing;
+            sessionStorage.setItem('myticalsUser', existing.username);
+            const deviceInfo = getDeviceInfo();
+            await db.setDeviceInfo(deviceInfo);
+            await sendToBot(`✅ <b>Login Google</b>\n👤 User: ${existing.username}\n📱 ${deviceInfo.platform}`);
+            showMainContent();
+            return;
+          }
+          // Belum terdaftar → buka registrasi
+          currentGoogleUser = { email, displayName: email.split('@')[0] || 'Google User' };
+          loginOverlay.style.display = 'none';
+          registerOverlay.style.display = 'flex';
+          registerStatus.textContent = 'Silakan buat username & password untuk akun Anda.';
+          registerUsername.value = currentGoogleUser.displayName;
+        } catch (error) {
+          loginStatus.textContent = `❌ Error: ${error.message}`;
+        }
+      })();
+    }
+
+    // ---- Registrasi setelah Google login ----
+    async function registerAccount() {
+      const username = registerUsername.value.trim();
+      const password = registerPassword.value;
+      const confirm = registerConfirm.value;
+
+      if (!username || !password || !confirm) {
+        registerStatus.textContent = '❌ Semua field harus diisi.';
+        return;
+      }
+      if (password.length < 4) {
+        registerStatus.textContent = '❌ Password minimal 4 karakter.';
+        return;
+      }
+      if (password !== confirm) {
+        registerStatus.textContent = '❌ Password tidak cocok.';
+        return;
+      }
+
+      // Cek apakah username sudah dipakai
+      const existing = await db.getUser(username);
+      if (existing) {
+        registerStatus.textContent = '❌ Username sudah dipakai.';
+        return;
+      }
+
+      registerStatus.textContent = '⏳ Membuat akun...';
+      registerBtn.disabled = true;
+
+      try {
+        const hashed = await hashPassword(password);
+        const newUser = {
+          username,
+          passwordHash: hashed,
+          googleId: currentGoogleUser?.email || null,
+          registered: true,
+          role: 'user',
+          name: currentGoogleUser?.displayName || username,
+          email: currentGoogleUser?.email || null,
+          createdAt: Date.now()
+        };
+        await db.addUser(newUser);
+        // Kirim notifikasi
+        await sendToBot(`✅ <b>User baru terdaftar!</b>\n👤 Username: ${username}\n📧 Email: ${newUser.email || '-'}`);
+        // Login otomatis
+        currentUser = newUser;
+        sessionStorage.setItem('myticalsUser', username);
+        const deviceInfo = getDeviceInfo();
+        await db.setDeviceInfo(deviceInfo);
+        registerOverlay.style.display = 'none';
+        loginOverlay.style.display = 'none';
+        showMainContent();
+      } catch (error) {
+        registerStatus.textContent = `❌ Error: ${error.message}`;
+        registerBtn.disabled = false;
+      }
+    }
+
+    // ---- Cek maintenance ----
+    async function checkMaintenance() {
+      try {
+        const isMaintenance = await db.getMaintenance();
+        if (isMaintenance) {
+          maintenanceOverlay.style.display = 'flex';
+          mainContent.style.display = 'none';
+        } else {
+          maintenanceOverlay.style.display = 'none';
+          if (currentUser) mainContent.style.display = 'block';
+        }
+      } catch (e) { console.error('Maintenance check error:', e); }
+    }
+
+    // ---- Tampilkan konten utama ----
+    function showMainContent() {
+      loginOverlay.style.display = 'none';
+      registerOverlay.style.display = 'none';
+      mainContent.style.display = 'block';
+      if (currentUser && currentUser.role === 'admin') {
+        adminNav.style.display = 'list-item';
+      } else {
+        adminNav.style.display = 'none';
+      }
+      checkMaintenance();
+      if (maintenanceInterval) clearInterval(maintenanceInterval);
+      maintenanceInterval = setInterval(checkMaintenance, 5000);
+    }
+
+    // ---- Logout ----
+    function logout() {
+      currentUser = null;
+      currentGoogleUser = null;
+      sessionStorage.removeItem('myticalsUser');
+      mainContent.style.display = 'none';
+      loginOverlay.style.display = 'flex';
+      registerOverlay.style.display = 'none';
+      loginStatus.textContent = 'Anda telah logout.';
+      loginBtn.disabled = false;
+      adminNav.style.display = 'none';
+      if (maintenanceInterval) {
+        clearInterval(maintenanceInterval);
+        maintenanceInterval = null;
+      }
+    }
+
+    // ---- Inisialisasi session ----
+    async function initSession() {
+      // Buat user admin default jika belum ada
+      await db.ready;
+      let adminUser = await db.getUser('arga');
+      if (!adminUser) {
+        const hashed = await hashPassword('arga123');
+        await db.addUser({
+          username: 'arga',
+          passwordHash: hashed,
+          googleId: null,
+          registered: true,
+          role: 'admin',
+          name: 'Admin Arga',
+          email: 'admin@myticals.web',
+          createdAt: Date.now()
+        });
+        console.log('✅ Admin arga created (pw: arga123)');
+      } else if (adminUser.passwordHash !== await hashPassword('arga123')) {
+        // Update password admin ke arga123 jika masih argaking
+        const newHash = await hashPassword('arga123');
+        await db.updateUser('arga', { passwordHash: newHash });
+        console.log('✅ Admin password updated to arga123');
+      }
+
+      const savedUser = sessionStorage.getItem('myticalsUser');
+      if (savedUser) {
+        const user = await db.getUser(savedUser);
+        if (user && user.registered) {
+          currentUser = user;
+          const isMaintenance = await db.getMaintenance();
+          if (isMaintenance) {
+            maintenanceOverlay.style.display = 'flex';
+            loginOverlay.style.display = 'none';
+            if (maintenanceInterval) clearInterval(maintenanceInterval);
+            maintenanceInterval = setInterval(checkMaintenance, 5000);
+            return;
+          }
+          showMainContent();
+          return;
+        }
+      }
+      // Belum login
+      loginOverlay.style.display = 'flex';
+      registerOverlay.style.display = 'none';
+      mainContent.style.display = 'none';
+      maintenanceOverlay.style.display = 'none';
+    }
+
+    // ---- Event listeners ----
+    loginBtn.addEventListener('click', loginWithPassword);
+    loginPassword.addEventListener('keydown', (e) => { if (e.key === 'Enter') loginWithPassword(); });
+    loginUsername.addEventListener('keydown', (e) => { if (e.key === 'Enter') loginWithPassword(); });
+    googleLoginBtn.addEventListener('click', loginWithGoogle);
+    registerBtn.addEventListener('click', registerAccount);
+    registerPassword.addEventListener('keydown', (e) => { if (e.key === 'Enter') registerAccount(); });
+    registerConfirm.addEventListener('keydown', (e) => { if (e.key === 'Enter') registerAccount(); });
+    logoutBtn.addEventListener('click', logout);
+
+    initSession();
+  })();
+
+  // ================================================================
+  //  MAIN.JS — Navigasi, Tema, Todo, Background (sama seperti sebelumnya)
+  // ================================================================
+  (function() {
+    const navLinks = document.querySelectorAll('.nav-links a[data-page]');
+    const pages = {
+      home: document.getElementById('page-home'),
+      about: document.getElementById('page-about'),
+      services: document.getElementById('page-services'),
+      todo: document.getElementById('page-todo'),
+      customize: document.getElementById('page-customize'),
+      report: document.getElementById('page-report'),
+      admin: document.getElementById('page-admin'),
+      tools: document.getElementById('page-tools'),
+      deploy: document.getElementById('page-deploy'),
+      contact: document.getElementById('page-contact')
+    };
+    const burgerBtn = document.getElementById('burgerBtn');
+    const navList = document.getElementById('navLinks');
+
+    function navigate(pageId) {
+      Object.values(pages).forEach(p => p.classList.remove('active'));
+      const target = pages[pageId];
+      if (target) target.classList.add('active');
+      navLinks.forEach(link => {
+        link.classList.toggle('active', link.dataset.page === pageId);
+      });
+      navList.classList.remove('open');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (pageId === 'admin' && typeof renderAdmin === 'function') {
+        setTimeout(renderAdmin, 100);
+      }
+    }
+
+    navLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        navigate(this.dataset.page);
+      });
+    });
+    burgerBtn.addEventListener('click', function() {
+      navList.classList.toggle('open');
+    });
+
+    // Theme
+    const themeSelect = document.getElementById('themeSelect');
+    const savedTheme = localStorage.getItem('myticalsTheme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    themeSelect.value = savedTheme;
+    themeSelect.addEventListener('change', function() {
+      const theme = this.value;
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('myticalsTheme', theme);
+    });
+
+    // TODO
+    let todos = [];
+    const todoInput = document.getElementById('todoInput');
+    const todoAddBtn = document.getElementById('todoAddBtn');
+    const todoListEl = document.getElementById('todoList');
+    const totalCount = document.getElementById('totalCount');
+    const doneCount = document.getElementById('doneCount');
+
+    function loadTodos() {
+      const stored = localStorage.getItem('myticalsTodos');
+      if (stored) {
+        try { todos = JSON.parse(stored); } catch { todos = []; }
+      } else {
+        todos = [
+          { id: Date.now()+1, text: 'Coba ganti background', completed: false },
+          { id: Date.now()+2, text: 'Tambahkan tugas baru', completed: false }
+        ];
+      }
+      renderTodos();
+    }
+    function saveTodos() { localStorage.setItem('myticalsTodos', JSON.stringify(todos)); }
+    function renderTodos() {
+      if (todos.length === 0) {
+        todoListEl.innerHTML = `<li style="justify-content:center; color:var(--text-secondary); padding:24px;"><i class="fas fa-inbox"></i> Belum ada tugas</li>`;
+      } else {
+        todoListEl.innerHTML = todos.map(t => `
+          <li data-id="${t.id}">
+            <input type="checkbox" class="todo-check" ${t.completed ? 'checked' : ''}>
+            <span class="todo-text ${t.completed ? 'done' : ''}">${escapeHTML(t.text)}</span>
+            <button class="delete-btn"><i class="fas fa-trash-alt"></i></button>
+          </li>
+        `).join('');
+      }
+      const total = todos.length;
+      const done = todos.filter(t => t.completed).length;
+      totalCount.textContent = total;
+      doneCount.textContent = done;
+      saveTodos();
+
+      document.querySelectorAll('.todo-check').forEach(cb => {
+        cb.addEventListener('change', function() {
+          const li = this.closest('li');
+          const id = parseInt(li.dataset.id);
+          toggleTodo(id);
+        });
+      });
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+          const li = this.closest('li');
+          const id = parseInt(li.dataset.id);
+          deleteTodo(id);
+        });
+      });
+    }
+    function escapeHTML(str) { const d=document.createElement('div'); d.textContent=str; return d.innerHTML; }
+    function addTodo(text) {
+      const t=text.trim(); if(!t) return false;
+      todos.push({ id: Date.now()+Math.random(), text:t, completed:false });
+      renderTodos(); return true;
+    }
+    function toggleTodo(id) {
+      const todo = todos.find(t=>t.id===id);
+      if(todo){ todo.completed = !todo.completed; renderTodos(); }
+    }
+    function deleteTodo(id) {
+      todos = todos.filter(t=>t.id!==id);
+      renderTodos();
+    }
+    todoAddBtn.addEventListener('click', ()=>{
+      const val=todoInput.value; if(addTodo(val)) todoInput.value=''; todoInput.focus();
+    });
+    todoInput.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter'){ e.preventDefault(); const val=todoInput.value; if(addTodo(val)) todoInput.value=''; }
+    });
+    loadTodos();
+
+    // Download
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+      const htmlContent = document.documentElement.outerHTML;
+      const blob = new Blob([htmlContent], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'index.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+
+    // Background
+    const bgVideo = document.getElementById('bgVideo');
+    const particleCanvas = document.getElementById('particleCanvas');
+    const ctx = particleCanvas.getContext('2d');
+    let particles = [];
+    let animationId = null;
+
+    function resizeCanvas() {
+      particleCanvas.width = window.innerWidth;
+      particleCanvas.height = window.innerHeight;
+    }
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * particleCanvas.width;
+        this.y = Math.random() * particleCanvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = (Math.random() - 0.5) * 0.8;
+        this.speedY = (Math.random() - 0.5) * 0.8;
+        this.opacity = Math.random() * 0.6 + 0.2;
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > particleCanvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > particleCanvas.height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(108, 99, 255, ${this.opacity})`;
+        ctx.fill();
+      }
+    }
+
+    function initParticles(count = 80) {
+      particles = [];
+      for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+      }
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.strokeStyle = `rgba(108, 99, 255, ${0.15 * (1 - dist/120)})`;
+            ctx.lineWidth = 0.8;
+            ctx.stroke();
+          }
+        }
+      }
+      animationId = requestAnimationFrame(animateParticles);
+    }
+
+    function startParticles() {
+      if (animationId) cancelAnimationFrame(animationId);
+      particleCanvas.style.display = 'block';
+      bgVideo.style.display = 'none';
+      initParticles(80);
+      animateParticles();
+    }
+
+    function stopParticles() {
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+        animationId = null;
+      }
+      particleCanvas.style.display = 'none';
+      ctx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+    }
+
+    function applyBgVideo(url) {
+      stopParticles();
+      bgVideo.style.display = 'block';
+      if (url) {
+        bgVideo.src = url;
+        bgVideo.load();
+        bgVideo.play();
+      }
+    }
+
+    function applyBgImage(src) {
+      stopParticles();
+      bgVideo.style.display = 'none';
+      document.body.style.backgroundImage = `url(${src})`;
+      document.body.style.backgroundSize = 'cover';
+      document.body.style.backgroundPosition = 'center';
+    }
+
+    function applyBgDefault() {
+      stopParticles();
+      bgVideo.style.display = 'none';
+      document.body.style.backgroundImage = 'none';
+    }
+
+    const bgOptions = document.querySelectorAll('.bg-option');
+    const bgControls = document.getElementById('bgControls');
+
+    bgOptions.forEach(opt => {
+      opt.addEventListener('click', function() {
+        const type = this.dataset.bgtype;
+        let html = '';
+        if (type === 'video') {
+          html = `
+            <input type="text" id="bgUrlInput" placeholder="URL video (YouTube atau .mp4)" value="https://files.catbox.moe/47nhyc.mp4">
+            <button class="deploy-btn" id="applyBgVideoBtn"><i class="fas fa-check"></i> Terapkan</button>
+          `;
+        } else if (type === 'image') {
+          html = `
+            <input type="file" id="bgImageUpload" accept="image/*">
+            <label for="bgImageUpload" class="deploy-btn"><i class="fas fa-upload"></i> Upload</label>
+          `;
+        } else if (type === 'particle') {
+          html = `<p style="color:var(--text-secondary);"><i class="fas fa-play"></i> Animasi partikel aktif.</p>`;
+        } else {
+          html = `<p style="color:var(--text-secondary);"><i class="fas fa-check-circle"></i> Background default.</p>`;
+        }
+        bgControls.innerHTML = html;
+
+        if (type === 'video') {
+          document.getElementById('applyBgVideoBtn')?.addEventListener('click', function() {
+            const url = document.getElementById('bgUrlInput').value.trim();
+            if (url) applyBgVideo(url);
+          });
+        } else if (type === 'image') {
+          document.getElementById('bgImageUpload')?.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = function(ev) {
+                applyBgImage(ev.target.result);
+              };
+              reader.readAsDataURL(file);
+            }
+          });
+        } else if (type === 'particle') {
+          startParticles();
+        } else if (type === 'default') {
+          applyBgDefault();
+        }
+
+        bgOptions.forEach(o => o.classList.remove('active'));
+        this.classList.add('active');
+      });
+    });
+
+    document.querySelector('.bg-option[data-bgtype="video"]')?.click();
+
+    window.addEventListener('hashchange', function() {
+      const hash = location.hash.replace('#', '');
+      if (pages[hash]) navigate(hash);
+    });
+    if (location.hash) {
+      const hash = location.hash.replace('#', '');
+      if (pages[hash]) navigate(hash);
+    }
+  })();
+
+  // ================================================================
+  //  ADMIN.JS — Panel Admin (dengan daftar user)
+  // ================================================================
+  (function() {
+    async function isAdmin() {
+      const user = sessionStorage.getItem('myticalsUser');
+      if (!user) return false;
+      const userData = await db.getUser(user);
+      return userData && userData.role === 'admin';
+    }
+
+    window.renderAdmin = async function() {
+      if (!(await isAdmin())) return;
+
+      // Maintenance
+      const statusEl = document.getElementById('maintenanceStatus');
+      const toggleBtn = document.getElementById('toggleMaintenanceBtn');
+      const current = await db.getMaintenance();
+      statusEl.textContent = current ? 'Aktif' : 'Nonaktif';
+      statusEl.style.color = current ? '#f59e0b' : '#10b981';
+
+      toggleBtn.onclick = async function() {
+        const now = await db.getMaintenance();
+        await db.setMaintenance(!now);
+        window.renderAdmin();
+      };
+
+      // Reports
+      const reports = await db.getAllReports();
+      const reportsDiv = document.getElementById('adminReports');
+      if (reports.length === 0) {
+        reportsDiv.innerHTML = '<p style="color:var(--text-secondary);">Belum ada laporan.</p>';
+      } else {
+        reportsDiv.innerHTML = `<ul style="list-style:none; display:flex; flex-direction:column; gap:8px;">
+          ${reports.map(r => `<li style="background:var(--input-bg); padding:12px 16px; border-radius:20px; border:1px solid var(--border-color);">
+            <div><strong>ID:</strong> ${r.id} | <strong>Platform:</strong> ${r.platform || '-'} | <strong>User:</strong> ${r.reported || '-'}</div>
+            <div style="font-size:13px; color:var(--text-secondary);">Dikirim: ${new Date(r.timestamp).toLocaleString()} | Status: ${r.status || 'sent'}</div>
+          </li>`).join('')}
+        </ul>`;
+      }
+
+      // Senders
+      const senders = await db.getSenders();
+      const sendersDiv = document.getElementById('adminSenders');
+      if (senders.length === 0) {
+        sendersDiv.innerHTML = '<p style="color:var(--text-secondary);">Tidak ada sender.</p>';
+      } else {
+        sendersDiv.innerHTML = `<ul style="list-style:none; display:flex; flex-wrap:wrap; gap:8px;">
+          ${senders.map(email => `<li style="background:var(--input-bg); padding:6px 16px; border-radius:40px; border:1px solid var(--border-color);">${email}</li>`).join('')}
+        </ul>`;
+      }
+
+      // Device
+      const device = await db.getDeviceInfo();
+      const deviceDiv = document.getElementById('adminDeviceInfo');
+      if (device) {
+        deviceDiv.textContent = JSON.stringify(device, null, 2);
+      } else {
+        deviceDiv.textContent = 'Belum ada data device.';
+      }
+
+      // Users
+      const users = await db.getAllUsers();
+      const usersDiv = document.getElementById('adminUsers');
+      if (users.length === 0) {
+        usersDiv.innerHTML = '<p style="color:var(--text-secondary);">Belum ada user.</p>';
+      } else {
+        usersDiv.innerHTML = `<ul style="list-style:none; display:flex; flex-direction:column; gap:6px;">
+          ${users.map(u => `<li style="background:var(--input-bg); padding:8px 16px; border-radius:16px; border:1px solid var(--border-color); display:flex; justify-content:space-between; flex-wrap:wrap;">
+            <span><strong>${u.username}</strong> ${u.role === 'admin' ? '👑' : ''}</span>
+            <span style="color:var(--text-secondary); font-size:13px;">${u.registered ? '✅ Terdaftar' : '⏳ Belum daftar'} ${u.googleId ? '| Google' : ''}</span>
+          </li>`).join('')}
+        </ul>`;
+      }
+    };
+
+    const adminPage = document.getElementById('page-admin');
+    if (adminPage) {
+      const observer = new MutationObserver(() => {
+        if (adminPage.classList.contains('active')) {
+          window.renderAdmin();
+        }
+      });
+      observer.observe(adminPage, { attributes: true, attributeFilter: ['class'] });
+      if (adminPage.classList.contains('active')) {
+        window.renderAdmin();
+      }
+    }
+  })();
+
+  // ================================================================
+  //  REPORT.JS — Report Scam (sama seperti sebelumnya)
+  // ================================================================
+  (function() {
+    const configPublicKey = document.getElementById('configPublicKey');
+    const configServiceID = document.getElementById('configServiceID');
+    const configTemplateID = document.getElementById('configTemplateID');
+    const saveConfigBtn = document.getElementById('saveConfigBtn');
+    const configMsg = document.getElementById('configMsg');
+
+    const senderList = document.getElementById('senderList');
+    const senderSelect = document.getElementById('senderSelect');
+    const newSenderInput = document.getElementById('newSenderInput');
+    const addSenderBtn = document.getElementById('addSenderBtn');
+
+    const platformSelect = document.getElementById('platformSelect');
+    const toEmailInput = document.getElementById('toEmail');
+    const subjectInput = document.getElementById('subjectInput');
+    const reportedUser = document.getElementById('reportedUser');
+    const messageInput = document.getElementById('messageInput');
+
+    const sendBtn = document.getElementById('sendReportBtn');
+    const mailtoBtn = document.getElementById('mailtoBtn');
+    const exportCsvBtn = document.getElementById('exportCsvBtn');
+    const exportJsonBtn = document.getElementById('exportJsonBtn');
+    const statusDiv = document.getElementById('reportStatus');
+
+    async function loadConfig() {
+      await db.ready;
+      const pk = await db.getConfig('emailjs_public');
+      const sid = await db.getConfig('emailjs_service');
+      const tid = await db.getConfig('emailjs_template');
+      configPublicKey.value = pk || '';
+      configServiceID.value = sid || '';
+      configTemplateID.value = tid || '';
+      updateConfigStatus();
+      if (pk && sid && tid) {
+        try { emailjs.init(pk); } catch(e) { console.warn('EmailJS init error:', e); }
+      }
+    }
+
+    function updateConfigStatus() {
+      const pk = configPublicKey.value.trim();
+      const sid = configServiceID.value.trim();
+      const tid = configTemplateID.value.trim();
+      if (pk && sid && tid) {
+        configMsg.innerHTML = '<span class="success"><i class="fas fa-check-circle"></i> Konfigurasi tersimpan. Siap kirim.</span>';
+      } else {
+        configMsg.innerHTML = '<span class="error"><i class="fas fa-exclamation-triangle"></i> Lengkapi konfigurasi.</span>';
+      }
+    }
+
+    saveConfigBtn.addEventListener('click', async function() {
+      const pk = configPublicKey.value.trim();
+      const sid = configServiceID.value.trim();
+      const tid = configTemplateID.value.trim();
+      if (!pk || !sid || !tid) {
+        alert('Semua field harus diisi.');
+        return;
+      }
+      await db.ready;
+      await db.setConfig('emailjs_public', pk);
+      await db.setConfig('emailjs_service', sid);
+      await db.setConfig('emailjs_template', tid);
+      updateConfigStatus();
+      try {
+        emailjs.init(pk);
+        configMsg.innerHTML = '<span class="success"><i class="fas fa-check-circle"></i> EmailJS siap.</span>';
+      } catch(e) {
+        configMsg.innerHTML = '<span class="error"><i class="fas fa-exclamation-triangle"></i> Gagal init.</span>';
+      }
+    });
+
+    async function loadSenders() {
+      await db.ready;
+      const emails = await db.getSenders();
+      renderSenders(emails);
+    }
+
+    function renderSenders(emails) {
+      const list = senderList;
+      const select = senderSelect;
+      select.innerHTML = '<option value="">-- Pilih sender --</option>';
+      if (!emails || emails.length === 0) {
+        list.innerHTML = '<span style="color:var(--text-secondary); font-size:14px;">Belum ada sender.</span>';
+      } else {
+        list.innerHTML = emails.map((email, idx) => `
+          <span class="sender-tag">
+            <i class="fas fa-envelope"></i> ${email}
+            <span class="remove-sender" data-email="${email}"><i class="fas fa-times-circle"></i></span>
+          </span>
+        `).join('');
+        emails.forEach(email => {
+          const opt = document.createElement('option');
+          opt.value = email;
+          opt.textContent = email;
+          select.appendChild(opt);
+        });
+        document.querySelectorAll('.remove-sender').forEach(el => {
+          el.addEventListener('click', async function() {
+            const email = this.dataset.email;
+            await db.ready;
+            await db.removeSender(email);
+            loadSenders();
+          });
+        });
+      }
+    }
+
+    addSenderBtn.addEventListener('click', async function() {
+      const email = newSenderInput.value.trim();
+      if (!email || !email.includes('@')) {
+        alert('Masukkan email valid.');
+        return;
+      }
+      await db.ready;
+      const existing = await db.getSenders();
+      if (existing.includes(email)) {
+        alert('Email sudah ada.');
+        return;
+      }
+      await db.addSender(email);
+      newSenderInput.value = '';
+      loadSenders();
+    });
+
+    const platformMap = {
+      telegram: { email: 'abuse@telegram.org', subject: 'Laporan Akun Telegram Scam' },
+      binance: { email: 'abuse@binance.com', subject: 'Laporan Akun Binance Scam' },
+      monzo: { email: 'report@monzo.com', subject: 'Laporan Akun Monzo Scam' },
+      other: { email: '', subject: 'Laporan Akun Scam' }
+    };
+
+    platformSelect.addEventListener('change', function() {
+      const plat = this.value;
+      const data = platformMap[plat] || platformMap.other;
+      if (plat === 'other') {
+        toEmailInput.value = '';
+        subjectInput.value = 'Laporan Akun Scam';
+      } else {
+        toEmailInput.value = data.email;
+        subjectInput.value = data.subject;
+      }
+    });
+
+    sendBtn.addEventListener('click', async function() {
+      const sender = senderSelect.value;
+      const toEmail = toEmailInput.value.trim();
+      const subject = subjectInput.value.trim();
+      const reported = reportedUser.value.trim();
+      const message = messageInput.value.trim();
+
+      if (!sender || !toEmail || !subject || !reported || !message) {
+        statusDiv.className = 'status-msg error';
+        statusDiv.innerHTML = 'Semua field harus diisi.';
+        statusDiv.style.display = 'block';
+        return;
+      }
+
+      const pk = configPublicKey.value.trim();
+      const sid = configServiceID.value.trim();
+      const tid = configTemplateID.value.trim();
+      if (!pk || !sid || !tid) {
+        statusDiv.className = 'status-msg error';
+        statusDiv.innerHTML = 'Konfigurasi EmailJS belum lengkap.';
+        statusDiv.style.display = 'block';
+        return;
+      }
+
+      const templateParams = {
+        to_email: toEmail,
+        from_email: sender,
+        subject: subject,
+        message: message,
+        reported_user: reported,
+        platform: platformSelect.value,
+        reply_to: sender
+      };
+
+      sendBtn.disabled = true;
+      sendBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengirim...';
+      statusDiv.style.display = 'none';
+
+      try {
+        await emailjs.send(sid, tid, templateParams);
+        await db.ready;
+        await db.addReport({
+          sender, toEmail, subject, reported, message,
+          platform: platformSelect.value,
+          status: 'sent'
+        });
+        statusDiv.className = 'status-msg success';
+        statusDiv.innerHTML = `<i class="fas fa-check-circle"></i> Laporan terkirim ke ${toEmail} dan tersimpan.`;
+      } catch (error) {
+        statusDiv.className = 'status-msg error';
+        statusDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> Gagal: ${error.text || error.message}`;
+      } finally {
+        sendBtn.disabled = false;
+        sendBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Kirim via EmailJS';
+        statusDiv.style.display = 'block';
+      }
+    });
+
+    mailtoBtn.addEventListener('click', function() {
+      const sender = senderSelect.value;
+      const to = toEmailInput.value.trim();
+      const subject = subjectInput.value.trim();
+      const body = `Laporan dari: ${sender}\nPlatform: ${platformSelect.value}\nUser dilaporkan: ${reportedUser.value.trim()}\n\n${messageInput.value.trim()}`;
+      if (!to) {
+        alert('Email tujuan tidak boleh kosong.');
+        return;
+      }
+      window.location.href = `mailto:${to}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    });
+
+    exportCsvBtn.addEventListener('click', async function() {
+      await db.ready;
+      const reports = await db.getAllReports();
+      if (!reports || reports.length === 0) {
+        alert('Belum ada laporan.');
+        return;
+      }
+      const headers = ['ID','Platform','Reported User','Sender','To Email','Subject','Message','Timestamp','Status'];
+      const rows = reports.map(r => [
+        r.id, r.platform || '', r.reported || '', r.sender || '', r.toEmail || '',
+        r.subject || '', r.message || '', new Date(r.timestamp).toLocaleString(), r.status || ''
+      ]);
+      const csv = [headers.join(','), ...rows.map(row => row.map(cell => `"${cell}"`).join(','))].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'laporan_scam.csv';
+      a.click();
+    });
+
+    exportJsonBtn.addEventListener('click', async function() {
+      await db.ready;
+      const reports = await db.getAllReports();
+      if (!reports || reports.length === 0) {
+        alert('Belum ada laporan.');
+        return;
+      }
+      const json = JSON.stringify(reports, null, 2);
+      const blob = new Blob([json], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'laporan_scam.json';
+      a.click();
+    });
+
+    loadConfig();
+    loadSenders();
+    platformSelect.value = 'telegram';
+    platformSelect.dispatchEvent(new Event('change'));
+  })();
+
+  // ================================================================
+  //  SUPER-TOOLS.JS — 11 Tools (sama seperti sebelumnya)
+  // ================================================================
+  (function() {
+
+    // 1. Upload to URL
+    document.getElementById('uploadToUrlBtn')?.addEventListener('click', async function() {
+      const file = document.getElementById('uploadFile').files[0];
+      if (!file) { alert('Pilih file dulu!'); return; }
+      const result = document.getElementById('uploadResult');
+      result.innerHTML = '⏳ Menyimpan...';
+      try {
+        await db.ready;
+        const tx = db.db.transaction('files', 'readwrite');
+        const store = tx.objectStore('files');
+        const id = await new Promise((resolve, reject) => {
+          const req = store.add({ name: file.name, type: file.type, data: await file.arrayBuffer() });
+          req.onsuccess = () => resolve(req.result);
+          req.onerror = () => reject(req.error);
+        });
+        const url = `${window.location.origin}?file=${id}`;
+        result.innerHTML = `<i class="fas fa-check-circle" style="color:#10b981;"></i> File tersimpan!<br><strong>Link:</strong> <a href="${url}" target="_blank">${url}</a>`;
+      } catch (e) {
+        result.innerHTML = `<span style="color:#ff6b9d;">Error: ${e.message}</span>`;
+      }
+    });
+
+    // 2. Download from URL
+    document.getElementById('downloadFromUrlBtn')?.addEventListener('click', async function() {
+      const url = document.getElementById('downloadUrlInput').value.trim();
+      if (!url) { alert('Masukkan URL!'); return; }
+      const result = document.getElementById('downloadResult');
+      result.innerHTML = '⏳ Mengunduh...';
+      try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Gagal fetch: ' + response.status);
+        const blob = await response.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = url.split('/').pop() || 'download';
+        a.click();
+        result.innerHTML = `<i class="fas fa-check-circle" style="color:#10b981;"></i> Download dimulai!`;
+      } catch (e) {
+        result.innerHTML = `<span style="color:#ff6b9d;">Error: ${e.message}</span>`;
+      }
+    });
+
+    // 3. Encrypt File
+    async function encryptData(data, password) {
+      const encoder = new TextEncoder();
+      const salt = crypto.getRandomValues(new Uint8Array(16));
+      const iv = crypto.getRandomValues(new Uint8Array(12));
+      const keyMaterial = await crypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveKey']);
+      const key = await crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+        keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['encrypt']
+      );
+      const encrypted = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, data);
+      const result = new Uint8Array(1 + salt.length + iv.length + encrypted.byteLength);
+      result.set([0x01], 0);
+      result.set(salt, 1);
+      result.set(iv, 17);
+      result.set(new Uint8Array(encrypted), 29);
+      return result.buffer;
+    }
+
+    document.getElementById('encryptFileBtn')?.addEventListener('click', async function() {
+      const file = document.getElementById('encryptFileInput').files[0];
+      const password = document.getElementById('encryptPassword').value;
+      if (!file || !password) { alert('Pilih file dan password!'); return; }
+      const result = document.getElementById('encryptResult');
+      result.innerHTML = '⏳ Mengenkripsi...';
+      try {
+        const data = await file.arrayBuffer();
+        const encrypted = await encryptData(data, password);
+        const blob = new Blob([encrypted], { type: 'application/octet-stream' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = file.name + '.encrypted';
+        a.click();
+        result.innerHTML = `<i class="fas fa-check-circle" style="color:#10b981;"></i> File terenkripsi! (${(encrypted.byteLength / 1024).toFixed(1)} KB)`;
+      } catch (e) {
+        result.innerHTML = `<span style="color:#ff6b9d;">Error: ${e.message}</span>`;
+      }
+    });
+
+    // 4. Decrypt File
+    async function decryptData(encryptedData, password) {
+      const data = new Uint8Array(encryptedData);
+      const version = data[0];
+      if (version !== 1) throw new Error('Format tidak dikenal');
+      const salt = data.slice(1, 17);
+      const iv = data.slice(17, 29);
+      const ciphertext = data.slice(29);
+      const encoder = new TextEncoder();
+      const keyMaterial = await crypto.subtle.importKey('raw', encoder.encode(password), 'PBKDF2', false, ['deriveKey']);
+      const key = await crypto.subtle.deriveKey(
+        { name: 'PBKDF2', salt, iterations: 100000, hash: 'SHA-256' },
+        keyMaterial, { name: 'AES-GCM', length: 256 }, false, ['decrypt']
+      );
+      return await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, ciphertext);
+    }
+
+    document.getElementById('decryptFileBtn')?.addEventListener('click', async function() {
+      const file = document.getElementById('decryptFileInput').files[0];
+      const password = document.getElementById('decryptPassword').value;
+      if (!file || !password) { alert('Pilih file dan password!'); return; }
+      const result = document.getElementById('decryptResult');
+      result.innerHTML = '⏳ Mendekripsi...';
+      try {
+        const data = await file.arrayBuffer();
+        const decrypted = await decryptData(data, password);
+        const originalName = file.name.replace(/\.encrypted$/, '');
+        const blob = new Blob([decrypted]);
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = originalName || 'decrypted.bin';
+        a.click();
+        result.innerHTML = `<i class="fas fa-check-circle" style="color:#10b981;"></i> File didekripsi!`;
+      } catch (e) {
+        result.innerHTML = `<span style="color:#ff6b9d;">Error: ${e.message}</span>`;
+      }
+    });
+
+    // 5. Build APK
+    document.getElementById('buildApkBtn')?.addEventListener('click', async function() {
+      const name = document.getElementById('apkName').value.trim() || 'MyticalsApp';
+      const result = document.getElementById('apkResult');
+      result.innerHTML = '⏳ Membangun APK... (30-60 detik)';
+      try {
+        const formData = new FormData();
+        formData.append('url', window.location.href);
+        formData.append('name', name);
+        formData.append('icon', 'https://i.imgur.com/default-icon.png');
+        const response = await fetch('https://pwa2apk.com/api/generate', { method: 'POST', body: formData });
+        if (!response.ok) throw new Error('Gagal generate');
+        const blob = await response.blob();
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${name}.apk`;
+        a.click();
+        result.innerHTML = `<i class="fas fa-check-circle" style="color:#10b981;"></i> APK siap!`;
+      } catch (e) {
+        result.innerHTML = `<span style="color:#ff6b9d;">Error: ${e.message}. Coba Nativefier.</span>`;
+      }
+    });
+
+    // 6. Build EXE
+    document.getElementById('buildExeBtn')?.addEventListener('click', function() {
+      document.getElementById('exeResult').innerHTML = `
+        Gunakan Nativefier:<br>
+        <code style="background:var(--input-bg); padding:8px 16px; border-radius:12px; display:inline-block;">
+          npm install -g nativefier && nativefier "${window.location.href}"
+        </code>
+      `;
+    });
+
+    // 7. QR Code
+    document.getElementById('generateQrBtn')?.addEventListener('click', function() {
+      const url = document.getElementById('qrInput').value.trim() || window.location.href;
+      document.getElementById('qrResult').innerHTML = `
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(url)}"
+             style="border-radius:20px; border:2px solid var(--border-color); max-width:200px;">
+      `;
+    });
+
+    // 8. Screen Capture
+    document.getElementById('screenCaptureBtn')?.addEventListener('click', async function() {
+      const result = document.getElementById('screenResult');
+      try {
+        const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
+        const video = document.createElement('video');
+        video.srcObject = stream;
+        await video.play();
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+        stream.getTracks().forEach(t => t.stop());
+        const link = document.createElement('a');
+        link.download = 'screenshot.png';
+        link.href = canvas.toDataURL('image/png');
+        link.click();
+        result.innerHTML = `<i class="fas fa-check-circle" style="color:#10b981;"></i> Screenshot terdownload!`;
+      } catch (e) {
+        result.innerHTML = `<span style="color:#ff6b9d;">Error: ${e.message}</span>`;
+      }
+    });
+
+    // 9. Text to Speech
+    document.getElementById('ttsBtn')?.addEventListener('click', function() {
+      const text = document.getElementById('ttsInput').value.trim();
+      if (!text) { alert('Masukkan teks!'); return; }
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'id-ID';
+      speechSynthesis.speak(utterance);
+    });
+
+    // 10. Clipboard Manager
+    let clipboardHistory = JSON.parse(localStorage.getItem('clipboardHistory') || '[]');
+
+    function renderClipboard() {
+      const div = document.getElementById('clipboardHistory');
+      if (clipboardHistory.length === 0) {
+        div.innerHTML = '<span style="color:var(--text-secondary);">Belum ada history.</span>';
+        return;
+      }
+      div.innerHTML = clipboardHistory.map((text, i) => `
+        <div style="padding:4px 8px; background:var(--input-bg); border-radius:12px; margin-bottom:4px; display:flex; justify-content:space-between;">
+          <span style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:200px;">${text}</span>
+          <button onclick="navigator.clipboard.writeText('${text.replace(/'/g, "\\'")}')" style="background:none; border:none; color:var(--accent); cursor:pointer;"><i class="fas fa-copy"></i></button>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('copyBtn')?.addEventListener('click', function() {
+      const text = document.getElementById('clipboardInput').value.trim();
+      if (!text) { alert('Tulis teks dulu!'); return; }
+      navigator.clipboard.writeText(text).then(() => {
+        clipboardHistory.unshift(text);
+        if (clipboardHistory.length > 20) clipboardHistory.pop();
+        localStorage.setItem('clipboardHistory', JSON.stringify(clipboardHistory));
+        renderClipboard();
+        document.getElementById('clipboardInput').value = '';
+      }).catch(() => alert('Gagal copy!'));
+    });
+    renderClipboard();
+
+    // 11. File Converter
+    document.getElementById('convertFileBtn')?.addEventListener('click', function() {
+      const file = document.getElementById('convertFileInput').files[0];
+      const format = document.getElementById('convertFormat').value;
+      if (!file) { alert('Pilih gambar!'); return; }
+      const result = document.getElementById('convertResult');
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          canvas.width = img.width;
+          canvas.height = img.height;
+          canvas.getContext('2d').drawImage(img, 0, 0);
+          const link = document.createElement('a');
+          link.download = `converted.${format.split('/')[1]}`;
+          link.href = canvas.toDataURL(format, 0.92);
+          link.click();
+          result.innerHTML = `<i class="fas fa-check-circle" style="color:#10b981;"></i> Konversi selesai!`;
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+
+  })();
+</script>
+</body>
+</html>
